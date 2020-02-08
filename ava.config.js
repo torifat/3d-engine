@@ -1,5 +1,5 @@
 export default {
-  files: ['test/*'],
+  files: ['test/**'],
   concurrency: 4,
   timeout: '1m',
   typescript: {
