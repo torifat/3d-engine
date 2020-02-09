@@ -1,6 +1,8 @@
 {
   "name": "3d-engine",
   "version": "1.0.0",
+  "description": "Build your own project",
+  "repository": "https://github.com/torifat/3d-engine",
   "main": "dist/index.html",
   "license": "MIT",
   "scripts": {
@@ -22,6 +24,7 @@
     "parcel": "^1.12.4",
     "prettier": "1.19.1",
     "pretty-quick": "^2.0.1",
+    "ts-node": "^8.6.2",
     "typescript": "^3.7.5"
   },
   "husky": {

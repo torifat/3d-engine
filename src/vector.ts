@@ -18,13 +18,11 @@ function reduceVectors<T>(
   return left.reduce<T>((acc, l, i) => reducer(acc, l, right[i]), initial);
 }
 
-function concatVectors(
+const concatVectors = (
   left: Vector,
   right: Vector,
   fn: (lValue: number, rValue: number) => number,
-) {
-  return reduceVectors(left, right, (acc, l, r) => acc.concat(fn(l, r)), []);
-}
+) => reduceVectors(left, right, (acc, l, r) => acc.concat(fn(l, r)), []);
 
 // Public APIs
 export const add = (left: Vector, right: Vector) =>
@@ -49,4 +47,13 @@ export function cross(left: Vector, right: Vector) {
     left[2] * right[0] - left[0] * right[2],
     left[0] * right[1] - left[1] * right[0],
   ];
+}
+
+// norm/magnitude/unit
+export const norm = (vector: Vector) =>
+  Math.sqrt(vector.reduce((acc, i) => acc + i * i, 0));
+
+export function normalize(vector: Vector) {
+  const u = norm(vector);
+  return vector.map(i => (i ? i / u : i));
 }

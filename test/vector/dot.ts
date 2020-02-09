@@ -1,11 +1,8 @@
 import test from 'ava';
 import { dot } from '../../src/vector';
 
-test('dot - 2.1', t => {
+test('dot - 2', t => {
   t.deepEqual(dot([-6, 8], [5, 12]), 66);
-});
-
-test('dot - 2.2', t => {
   t.deepEqual(dot([-12, 16], [12, 9]), 0);
 });
 

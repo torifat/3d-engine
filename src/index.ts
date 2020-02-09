@@ -1,13 +1,32 @@
 import { Device } from './Device';
+import { Mesh } from './Mesh';
+import { Camera } from './Camera';
 
 const canvas = document.querySelector('canvas');
+const d = new Device(canvas);
+const c = new Camera([0, 0, 10]);
+const meshes = [];
+const cube = new Mesh('Cube', [
+  [-1, 1, 1],
+  [1, 1, 1],
+  [-1, -1, 1],
+  [-1, -1, -1],
+  [-1, 1, -1],
+  [1, 1, -1],
+  [1, -1, 1],
+  [1, -1, -1],
+]);
+meshes.push(cube);
 
-if (canvas) {
-  const d = new Device(canvas);
-
+function drawingLoop() {
   d.clear();
-  d.putPixel(5, 5, [255, 0, 0, 255]);
-  d.putPixel(6, 6, [0, 255, 0, 255]);
-  d.putPixel(7, 7, [0, 0, 255, 255]);
+
+  cube.rotation[0] += 0.01;
+  cube.rotation[1] += 0.01;
+
+  d.render(c, meshes);
   d.present();
+  requestAnimationFrame(drawingLoop);
 }
+
+requestAnimationFrame(drawingLoop);
