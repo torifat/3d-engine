@@ -15,7 +15,7 @@ function assertSquareMatrix(matrix: Matrix) {
 
   if (rCount !== cCount) {
     throw new Error(
-      `Need a square matrix to perform this method! ${rCount} != ${cCount}`,
+      `Need a square matrix to perform this operation! ${rCount} != ${cCount}`,
     );
   }
 }
