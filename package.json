@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit",
     "test:build": "tsc --build tsconfig.test.json",
     "test": "npm run test:build && ava",
-    "test:watch": "npm run test:build -w & ava --watch",
+    "test:watch": "npm run test:build -- -w & ava --watch",
     "coverage": "npm run test:build && nyc --reporter=lcov ava"
   },
   "devDependencies": {
