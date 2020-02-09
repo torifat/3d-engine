@@ -19,3 +19,19 @@ test('determinant - 3', t => {
 
   t.is(determinant(mat1), -306);
 });
+
+test('determinant - 2x3', t => {
+  const mat1 = [
+    [6, 1, 1],
+    [4, -2, 5],
+  ];
+
+  t.throws(
+    () => {
+      determinant(mat1);
+    },
+    {
+      message: 'Need a square matrix to perform this operation! 2 != 3',
+    },
+  );
+});
