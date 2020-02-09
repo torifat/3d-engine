@@ -7,14 +7,18 @@
     "build": "parcel build index.html",
     "start": "parcel serve index.html",
     "typecheck": "tsc --noEmit",
-    "test": "tsc --build tsconfig.test.json && ava",
-    "test:watch": "tsc --build tsconfig.test.json -w & ava --watch"
+    "test:build": "tsc --build tsconfig.test.json",
+    "test": "npm run test:build && ava",
+    "test:watch": "npm run test:build -w & ava --watch",
+    "coverage": "npm run test:build && nyc --reporter=lcov ava"
   },
   "devDependencies": {
     "@ava/typescript": "^1.1.0",
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@parcel/transformer-typescript-tsc": "^2.0.0-alpha.3",
     "ava": "^3.2.0",
     "husky": "^4.2.1",
+    "nyc": "^15.0.0",
     "parcel": "^1.12.4",
     "prettier": "1.19.1",
     "pretty-quick": "^2.0.1",
