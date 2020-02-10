@@ -22,7 +22,8 @@ const concatVectors = (
   left: Vector,
   right: Vector,
   fn: (lValue: number, rValue: number) => number,
-) => reduceVectors(left, right, (acc, l, r) => acc.concat(fn(l, r)), []);
+) =>
+  reduceVectors<Vector>(left, right, (acc, l, r) => acc.concat(fn(l, r)), []);
 
 // Public APIs
 export const add = (left: Vector, right: Vector) =>
