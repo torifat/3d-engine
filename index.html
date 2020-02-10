@@ -15,11 +15,19 @@
   </head>
   <body>
     <canvas height="200" width="200"></canvas>
-    <div><button id="left">Left</button> <button id="right">Right</button></div>
-    <div><button id="up">Up</button> <button id="down">Down</button></div>
-    <div>
-      <button id="forward">Forward</button>
-      <button id="backward">Backward</button>
+    <div id="control-panel">
+      <div>
+        <button data-index="0" data-value="-0.5">Left</button>
+        <button data-index="0" data-value="0.5">Right</button>
+      </div>
+      <div>
+        <button data-index="1" data-value="-0.5">Up</button>
+        <button data-index="1" data-value="0.5">Down</button>
+      </div>
+      <div>
+        <button data-index="2" data-value="-0.5">Forward</button>
+        <button data-index="2" data-value="0.5">Backward</button>
+      </div>
     </div>
     <script src="./src/index.ts"></script>
   </body>

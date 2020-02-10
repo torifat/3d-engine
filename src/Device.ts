@@ -1,8 +1,13 @@
 import { Camera } from './Camera';
 import { Matrix, multiply } from './matrix';
 import { Mesh } from './Mesh';
-import { Point3D, RGBA, up } from './utils';
-import * as v from './vector';
+import {
+  perspectiveProjectionMatrix,
+  Point3D,
+  RGBA,
+  translationMatrix,
+  up,
+} from './utils';
 // TODO: make `import type` after upgrading to tsc 3.8
 import { Vector } from './vector';
 
@@ -108,7 +113,7 @@ export class Device {
   render(camera: Camera, meshes: Array<Mesh> = []) {
     const viewMatrix = camera.lookAt(up());
 
-    const projectionMatrix = this.getPerspectiveProjectionMatrix(
+    const projectionMatrix = perspectiveProjectionMatrix(
       0.78,
       this.width / this.height,
       0.01,
@@ -116,13 +121,7 @@ export class Device {
     );
 
     meshes.forEach(mesh => {
-      const [x, y, z] = mesh.position;
-      const worldMatrix = [
-        [1, 0, 0, 0],
-        [0, 1, 0, 0],
-        [0, 0, 1, 0],
-        [x, y, z, 1],
-      ];
+      const worldMatrix = translationMatrix(mesh.position);
 
       const transformMatrix = multiply(
         multiply(worldMatrix, viewMatrix),
@@ -149,25 +148,5 @@ export class Device {
       //   this.drawPoint(this.project(vertex, transformMatrix)),
       // );
     });
-  }
-
-  // https://www.codeguru.com/cpp/misc/misc/graphics/article.php/c10123/Deriving-Projection-Matrices.htm#page-3
-  getPerspectiveProjectionMatrix(
-    fov: number,
-    aspectRatio: number,
-    zNear: number,
-    zFar: number,
-  ): Matrix {
-    const depth = zFar - zNear;
-    // cot(fov/2);
-    const a = 1 / Math.tan(fov / 2);
-    const b = zFar / depth;
-    const c = -(zFar * zNear) / depth;
-    return [
-      [a / aspectRatio, 0, 0, 0],
-      [0, a, 0, 0],
-      [0, 0, b, 1],
-      [0, 0, c, 0],
-    ];
   }
 }
