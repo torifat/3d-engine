@@ -1,19 +1,17 @@
 import { Camera } from './Camera';
-import { identity, Matrix, multiply } from './matrix';
+import { Matrix, multiply } from './matrix';
 import { Mesh } from './Mesh';
 import { Point3D, RGBA, up } from './utils';
+// TODO: make `import type` after upgrading to tsc 3.8
 import { Vector } from './vector';
 
 export class Device {
   private backBuffer: ImageData;
-  private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   private height: number;
   private width: number;
 
   constructor(canvas: HTMLCanvasElement) {
-    this.canvas = canvas;
-
     const context = canvas.getContext('2d');
     if (!context) throw new Error('No context!');
 
@@ -45,8 +43,11 @@ export class Device {
   }
 
   project(vertex: Point3D, transform: Matrix) {
+    // Homogeneous coordinates
     const point = multiply([[...vertex, 1]], transform);
 
+    // Cartesian coordinates
+    // Perspective divide (normalization)
     const point_x = point[0][0] / point[0][3];
     const point_y = point[0][1] / point[0][3];
 
@@ -65,29 +66,50 @@ export class Device {
   render(camera: Camera, meshes: Array<Mesh> = []) {
     const viewMatrix = camera.lookAt(up());
 
-    const projectionMatrix = [
-      [2.432765007019043, 0, 0, 0],
-      [0, 2.432765007019043, 0, 0],
-      [0, 0, 1.0202020406723022, 1],
-      [0, 0, -0.020202020183205605, 0],
-    ];
+    const projectionMatrix = this.getPerspectiveProjectionMatrix(
+      0.78,
+      this.width / this.height,
+      0.01,
+      1.0,
+    );
 
     meshes.forEach(mesh => {
-      const worldMatrix = identity(4);
-      worldMatrix[3][0] = mesh.position[0];
-      worldMatrix[3][1] = mesh.position[1];
-      worldMatrix[3][2] = mesh.position[2];
+      const [x, y, z] = mesh.position;
+      const worldMatrix = [
+        [1, 0, 0, 0],
+        [0, 1, 0, 0],
+        [0, 0, 1, 0],
+        [x, y, z, 1],
+      ];
 
       const transformMatrix = multiply(
         multiply(worldMatrix, viewMatrix),
         projectionMatrix,
       );
 
-      mesh.vertices.forEach(vertex => {
-        const projectedPoint = this.project(vertex, transformMatrix);
-        // this.drawPoint([projectedPoint.x, projectedPoint.y]);
-        this.drawPoint(projectedPoint);
-      });
+      mesh.vertices.forEach(vertex =>
+        this.drawPoint(this.project(vertex, transformMatrix)),
+      );
     });
+  }
+
+  // https://www.codeguru.com/cpp/misc/misc/graphics/article.php/c10123/Deriving-Projection-Matrices.htm#page-3
+  getPerspectiveProjectionMatrix(
+    fov: number,
+    aspectRatio: number,
+    zNear: number,
+    zFar: number,
+  ): Matrix {
+    const depth = zFar - zNear;
+    // cot(fov/2);
+    const a = 1 / Math.tan(fov / 2);
+    const b = zFar / depth;
+    const c = -(zFar * zNear) / depth;
+    return [
+      [a / aspectRatio, 0, 0, 0],
+      [0, a, 0, 0],
+      [0, 0, b, 1],
+      [0, 0, c, 0],
+    ];
   }
 }

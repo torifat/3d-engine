@@ -12,6 +12,7 @@ export class Camera {
     public target: Point3D = zero(),
   ) {}
 
+  // https://www.3dgep.com/understanding-the-view-matrix/
   // https://web.archive.org/web/20131222170415/http:/robertokoci.com/world-view-projection-matrix-unveiled/
   lookAt(up: Point3D, direction: LookAtDirection = LookAtDirection.Left) {
     // Position === Eye

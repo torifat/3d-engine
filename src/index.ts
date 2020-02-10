@@ -30,3 +30,25 @@ function drawingLoop() {
 }
 
 requestAnimationFrame(drawingLoop);
+
+document.getElementById('left').addEventListener('click', () => {
+  c.position[0] -= 0.5;
+});
+
+document.getElementById('right').addEventListener('click', () => {
+  c.position[0] += 0.5;
+});
+document.getElementById('up').addEventListener('click', () => {
+  c.position[1] -= 0.5;
+});
+
+document.getElementById('down').addEventListener('click', () => {
+  c.position[1] += 0.5;
+});
+document.getElementById('forward').addEventListener('click', () => {
+  c.position[2] -= 0.5;
+});
+
+document.getElementById('backward').addEventListener('click', () => {
+  c.position[2] += 0.5;
+});

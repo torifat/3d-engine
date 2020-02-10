@@ -31,6 +31,9 @@ export const add = (left: Vector, right: Vector) =>
 export const subtract = (left: Vector, right: Vector) =>
   concatVectors(left, right, (l, r) => l - r);
 
+export const multiply = (vector: Vector, scalar: number) =>
+  vector.map(i => i * scalar);
+
 // https://www.mathsisfun.com/algebra/vectors-dot-product.html
 export const dot = (left: Vector, right: Vector) =>
   reduceVectors(left, right, (acc, l, r) => acc + l * r, 0);
