@@ -1,5 +1,6 @@
 /.cache/
 /.nyc_output/
+/.secret/
 /.vscode/
 
 /node_modules/

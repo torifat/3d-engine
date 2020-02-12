@@ -6,7 +6,7 @@
   "main": "dist/index.html",
   "license": "MIT",
   "scripts": {
-    "build": "parcel build index.html",
+    "build": "parcel build index.html --public-url ./",
     "start": "parcel serve index.html",
     "typecheck": "tsc --noEmit",
     "test:build": "tsc --build tsconfig.test.json",

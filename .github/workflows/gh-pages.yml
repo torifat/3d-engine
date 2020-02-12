@@ -1,4 +1,4 @@
-name: Coverage
+name: GitHub Pages
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  coverage:
+  gh-pages:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -24,12 +24,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Generate coverage report
+      - name: Build
         run: |
           npm install
-          npm run coverage
+          npm run build
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          token: ${{secrets.CODECOV_TOKEN}}
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          publish_dir: ./dist
