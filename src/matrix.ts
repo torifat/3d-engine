@@ -46,6 +46,7 @@ export const copy = (matrix: Matrix) =>
   create(rows(matrix), columns(matrix), (row, column) => matrix[row][column]);
 
 // https://www.mathsisfun.com/algebra/matrix-multiplying.html
+// TODO: Add support for multiple arguments using divide and conquer
 export function multiply(left: Matrix, right: Matrix): Matrix {
   const rRows = rows(right);
   const lCols = columns(left);

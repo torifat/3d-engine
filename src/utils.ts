@@ -1,4 +1,4 @@
-import { Matrix } from './matrix';
+import { Matrix, multiply } from './matrix';
 
 export type Point2D = [number, number];
 export type Point3D = [number, number, number];
@@ -8,12 +8,31 @@ export const up = (): Point3D => [0, 1, 0];
 
 export type RGBA = [number, number, number, number];
 
-export const translationMatrix = ([x, y, z]: Point3D): Matrix => [
-  [1, 0, 0, 0],
-  [0, 1, 0, 0],
-  [0, 0, 1, 0],
-  [x, y, z, 1],
-];
+// https://en.wikipedia.org/wiki/Rotation_matrix#Determining_the_angle
+export function transform({
+  translation = [0, 0, 0],
+  rotation: [xTheta, yTheta, zTheta] = [0, 0, 0],
+}: {
+  translation?: Point3D;
+  rotation?: [number, number, number];
+}): Matrix {
+  const [tx, ty, tz] = translation;
+
+  const xc = Math.cos(xTheta); // a
+  const xs = Math.sin(xTheta); // b
+  const yc = Math.cos(yTheta); // x
+  const ys = Math.sin(yTheta); // y
+  const zc = Math.cos(zTheta); // l
+  const zs = Math.sin(zTheta); // m
+
+  // http://bit.ly/2vuMpKl
+  return [
+    [zc * yc + xs * zs * ys, xs * zc * ys - zs * yc, xc * ys, 0],
+    [xc * zs, xc * zc, -xs, 0],
+    [xs * zs * yc - zc * ys, xs * (zc * yc) + zs * ys, xc * yc, 0],
+    [tx, ty, tz, 1],
+  ];
+}
 
 // https://www.codeguru.com/cpp/misc/misc/graphics/article.php/c10123/Deriving-Projection-Matrices.htm#page-3
 export function perspectiveProjectionMatrix(

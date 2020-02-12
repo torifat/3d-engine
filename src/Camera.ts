@@ -28,6 +28,7 @@ export class Camera {
     const x = normalize(cross(up, z));
     // Up vector
     const y = cross(z, x);
+
     return [
       [x[0], y[0], z[0], 0],
       [x[1], y[1], z[1], 0],

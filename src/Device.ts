@@ -5,7 +5,7 @@ import {
   perspectiveProjectionMatrix,
   Point3D,
   RGBA,
-  translationMatrix,
+  transform,
   up,
 } from './utils';
 // TODO: make `import type` after upgrading to tsc 3.8
@@ -120,24 +120,27 @@ export class Device {
       1.0,
     );
 
-    meshes.forEach(mesh => {
-      const worldMatrix = translationMatrix(mesh.position);
+    meshes.forEach(({ faces, position, rotation, vertices }) => {
+      const worldMatrix = transform({
+        translation: position,
+        rotation,
+      });
 
       const transformMatrix = multiply(
         multiply(worldMatrix, viewMatrix),
         projectionMatrix,
       );
 
-      for (let i = 0; i < mesh.vertices.length - 1; ++i) {
-        const from = this.project(mesh.vertices[i], transformMatrix);
-        const to = this.project(mesh.vertices[i + 1], transformMatrix);
+      for (let i = 0; i < vertices.length - 1; ++i) {
+        const from = this.project(vertices[i], transformMatrix);
+        const to = this.project(vertices[i + 1], transformMatrix);
         this.drawLine(from, to);
       }
 
-      mesh.faces.forEach(face => {
-        const a = this.project(mesh.vertices[face[0]], transformMatrix);
-        const b = this.project(mesh.vertices[face[1]], transformMatrix);
-        const c = this.project(mesh.vertices[face[2]], transformMatrix);
+      faces.forEach(face => {
+        const a = this.project(vertices[face[0]], transformMatrix);
+        const b = this.project(vertices[face[1]], transformMatrix);
+        const c = this.project(vertices[face[2]], transformMatrix);
 
         this.drawLine(a, b);
         this.drawLine(b, c);
