@@ -18,7 +18,7 @@
     "@ava/typescript": "^1.1.0",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@parcel/transformer-typescript-tsc": "^2.0.0-alpha.3",
-    "ava": "^3.2.0",
+    "ava": "^5.2.0",
     "husky": "^4.2.1",
     "nyc": "^15.0.0",
     "parcel": "^1.12.4",
